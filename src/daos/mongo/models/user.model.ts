@@ -1,9 +1,9 @@
-import { Schema, model } from "mongoose";
-import { User } from "../../../interfaces/models";
+import { Schema, model, Model } from "mongoose";
+import { UserModel } from "../../../interfaces/entyties";
 
 const collection = "users";
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<UserModel>({
 	name: { type: String, required: true },
 	email: { type: String, required: true },
 	role: { type: String },
@@ -15,6 +15,6 @@ const userSchema = new Schema<User>({
 	],
 });
 
-const userModel = model(collection, userSchema);
+const userModel = model<UserModel>(collection, userSchema);
 
 export default userModel;

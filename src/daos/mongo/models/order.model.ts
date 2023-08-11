@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
-import { Order } from "../../../interfaces/models";
+import { OrderModel } from "../../../interfaces/entyties";
 
 const collection = "orders";
 
-const orderSchema = new Schema<Order>({
+const orderSchema = new Schema<OrderModel>({
 	number: { type: Number, required: true },
 	business: {
 		type: Schema.Types.ObjectId,
@@ -17,6 +17,6 @@ const orderSchema = new Schema<Order>({
 	totalProducts: { type: Number, required: true },
 });
 
-const orderModel = model(collection, orderSchema);
+const orderModel = model<OrderModel>(collection, orderSchema);
 
 export default orderModel;

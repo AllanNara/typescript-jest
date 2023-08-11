@@ -1,7 +1,7 @@
 import { UpdateWriteOpResult } from "mongoose";
 
 import userModel from "./models/user.model";
-import { User } from "../../interfaces/models";
+import { User } from "../../interfaces/entyties";
 import { IUserDAO } from "../../interfaces/daos";
 
 export default class UserDAO implements IUserDAO {

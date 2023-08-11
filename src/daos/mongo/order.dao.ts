@@ -1,6 +1,6 @@
 import { UpdateWriteOpResult } from "mongoose";
 
-import { Order } from "../../interfaces/models.js";
+import { Order } from "../../interfaces/entyties.js";
 import { IOrderDAO } from "../../interfaces/daos.js";
 import orderModel from "./models/order.model.js";
 

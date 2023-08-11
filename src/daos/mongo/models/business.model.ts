@@ -1,13 +1,13 @@
 import { Schema, model, Model } from "mongoose";
-import { Business } from "../../../interfaces/models";
+import { BusinessModel } from "../../../interfaces/entyties";
 
 const collection = "business";
 
-export const businessSchema = new Schema<Business, Model<Business>>({
+export const businessSchema = new Schema<BusinessModel>({
 	name: { type: String, required: true },
 	products: [],
 });
 
-const businessModel = model<Business, Model<Business>>(collection, businessSchema);
+const businessModel = model<BusinessModel>(collection, businessSchema);
 
 export default businessModel;

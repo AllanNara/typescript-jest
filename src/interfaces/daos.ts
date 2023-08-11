@@ -1,5 +1,5 @@
 import { UpdateWriteOpResult } from "mongoose";
-import { Business, Order, User } from "./models";
+import { Business, Order, User } from "./entyties";
 
 export interface IBusinessDAO {
 	getBusiness(): Promise<Array<Business> | null>;
