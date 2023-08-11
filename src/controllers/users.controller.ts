@@ -1,21 +1,30 @@
-import User from '../daos/user.dao.js';
+import { Request, Response } from "express";
+import UserDAO from "../daos/mongo/user.dao";
+import { User } from "../interfaces/entyties";
 
-const user = new User();
+const userDao = new UserDAO();
 
-export const getUsers = (req, res) => {
-    const result = user.getUsers();
-    if(!result) res.status(500).send({status: 'error', error: 'Something went wrong'});
-    res.send({status: 'success', result });
-};
+export default class UserControllers {
+	async getUsers(_: Request, res: Response): Promise<Response> {
+		const result = await userDao.getUsers();
+		if (result === null)
+			return res.status(500).send({ status: "error", error: "Something went wrong" });
+		return res.send({ status: "success", result });
+	}
 
-export const getUserById = (req, res) => {
-    const result = user.getUserById(req.params.id);
-    if(!result) res.status(404).send({status: 'error', error: 'User not found'});
-    res.send({status: 'success', result });
-};
+	async getUserById(req: Request, res: Response): Promise<Response> {
+		const idUser: string = req.params.id;
+		const result = await userDao.getUserById(idUser);
+		if (result === null)
+			return res.status(404).send({ status: "error", error: "User not found" });
+		return res.send({ status: "success", result });
+	}
 
-export const saveUser = (req, res) => {
-    const result = user.saveUser(req.body);
-    if(!result) res.status(500).send({status: 'error', error: 'Something went wrong'});
-    res.send({status: 'success', result });
-};
+	async saveUser(req: Request, res: Response): Promise<Response> {
+		const newUser: User = req.body;
+		const result = await userDao.saveUser(newUser);
+		if (result === null)
+			return res.status(500).send({ status: "error", error: "Something went wrong" });
+		return res.send({ status: "success", result });
+	}
+}
