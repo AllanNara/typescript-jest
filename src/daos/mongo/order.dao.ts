@@ -1,8 +1,8 @@
 import { UpdateWriteOpResult } from "mongoose";
 
-import { Order } from "../../interfaces/entyties.js";
-import { IOrderDAO } from "../../interfaces/daos.js";
-import orderModel from "./models/order.model.js";
+import { Order } from "../../interfaces/entyties";
+import { IOrderDAO } from "../../interfaces/daos";
+import orderModel from "./models/order.model";
 
 export default class OrderDAO implements IOrderDAO {
 	getOrders = async () => {

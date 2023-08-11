@@ -1,8 +1,8 @@
 import { UpdateWriteOpResult } from "mongoose";
 
-import { Business } from "../../interfaces/entyties.js";
-import { IBusinessDAO } from "../../interfaces/daos.js";
-import businessModel from "./models/business.model.js";
+import { Business } from "../../interfaces/entyties";
+import { IBusinessDAO } from "../../interfaces/daos";
+import businessModel from "./models/business.model";
 
 export default class BusinessDAO implements IBusinessDAO {
 	getBusiness = async () => {

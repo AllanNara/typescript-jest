@@ -1,8 +1,8 @@
 import express from "express";
-import config from "./config/config.js";
-import userRouter from "./routes/user.router.js";
-import businessRouter from "./routes/business.router.js";
-import ordersRouter from "./routes/orders.router.js";
+import config from "./config/config";
+import userRouter from "./routes/user.router";
+import businessRouter from "./routes/business.router";
+import ordersRouter from "./routes/orders.router";
 import cors from "cors";
 import mongoose from "mongoose";
 
