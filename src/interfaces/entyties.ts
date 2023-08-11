@@ -2,7 +2,7 @@ import { Document } from "mongoose";
 
 export interface Business {
 	name: string;
-	products: Array<any>;
+	products: Array<string>;
 }
 
 export interface BusinessModel extends Business, Document {}
@@ -11,7 +11,7 @@ export interface Order {
 	number: number;
 	business: Business;
 	user: User;
-	products: Array<any>;
+	products: Array<string>;
 	totalProducts: number;
 	resolved?: boolean;
 }

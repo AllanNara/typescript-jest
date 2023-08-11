@@ -1,4 +1,4 @@
-import { Schema, model, Model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { UserModel } from "../../../interfaces/entyties";
 
 const collection = "users";
