@@ -1,21 +1,22 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
+import { Order } from "../../../interfaces/models";
 
 const collection = "orders";
 
-const orderSchema = new mongoose.Schema({
-    number: { type: Number, required: true },
-    business: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "business",
-    },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-    },
-    products: [],
-    totalProducts: { type: Number, required: true },
+const orderSchema = new Schema<Order>({
+	number: { type: Number, required: true },
+	business: {
+		type: Schema.Types.ObjectId,
+		ref: "business",
+	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: "users",
+	},
+	products: [],
+	totalProducts: { type: Number, required: true },
 });
 
-const orderModel = mongoose.model(collection, orderSchema);
+const orderModel = model(collection, orderSchema);
 
 export default orderModel;

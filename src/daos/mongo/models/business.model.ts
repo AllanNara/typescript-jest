@@ -1,12 +1,13 @@
-import mongoose from "mongoose";
+import { Schema, model, Model } from "mongoose";
+import { Business } from "../../../interfaces/models";
 
 const collection = "business";
 
-const businessSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    products: [],
+export const businessSchema = new Schema<Business, Model<Business>>({
+	name: { type: String, required: true },
+	products: [],
 });
 
-const businessModel = mongoose.model(collection, businessSchema);
+const businessModel = model<Business, Model<Business>>(collection, businessSchema);
 
 export default businessModel;

@@ -1,43 +1,50 @@
-import userModel from "./models/user.model.js"
+import { UpdateWriteOpResult } from "mongoose";
 
-export default class User {
-    getUsers = async () => {
-        try {
-            const users = await userModel.find();
-            return users;
-        } catch (error) {
-            console.log(error)
-            return null;
-        }
-    }
+import userModel from "./models/user.model";
+import { User } from "../../interfaces/models";
+import { IUserDAO } from "../../interfaces/daos";
 
-    getUserById = async (id) => {
-        try {
-            const user = await userModel.findById(id);
-            return user;
-        } catch (error) {
-            console.log(error)
-            return null;
-        }
-    }
+export default class UserDAO implements IUserDAO {
+	getUsers = async () => {
+		try {
+			const users: Array<User> = await userModel.find();
+			return users;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	};
 
-    saveUser = async (user) => {
-        try {
-            const newUser = await userModel.create(user);
-            return newUser;
-        } catch (error) {
-            console.log(error)
-            return null;
-        }
-    }
+	getUserById = async (idUser: string) => {
+		try {
+			const user: User | null = await userModel.findById(idUser);
+			return user;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	};
 
-    updateUser = async (id, user) => {
-        try {
-            const result = await userModel.updateOne({ _id: id }, user);
-            return result;
-        } catch (error) {
-            console.log(error)
-            return null;
-        }
-    }
+	saveUser = async (user: User) => {
+		try {
+			const newUser: User = await userModel.create(user);
+			return newUser;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	};
+
+	updateUser = async (idUser: string, user: User) => {
+		try {
+			const result: UpdateWriteOpResult = await userModel.updateOne(
+				{ _id: idUser },
+				user
+			);
+			return result;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
+	};
 }
