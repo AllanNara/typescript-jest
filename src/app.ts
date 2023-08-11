@@ -9,9 +9,12 @@ import mongoose from "mongoose";
 const app = express();
 const { DB_HOST, DB_USER, DB_PASS, PORT } = config;
 
-app.use(cors());
+mongoose
+	.connect(`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/?retryWrites=true&w=majority`)
+	.then((res) => console.log("MongoDB connected successfully"))
+	.catch((err) => console.log("Error to connect MongoDB: ", err));
 
-// mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/?retryWrites=true&w=majority`);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
