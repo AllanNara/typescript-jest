@@ -27,6 +27,7 @@ export default class OrderDAO implements IOrderDAO {
 
 	saveOrder = async (order: Order) => {
 		try {
+			order.resolved = false;
 			const newOrder: Order = await orderModel.create(order);
 			return newOrder;
 		} catch (error) {
@@ -35,7 +36,7 @@ export default class OrderDAO implements IOrderDAO {
 		}
 	};
 
-	updateOrder = async (idOrder: string, order: Order) => {
+	updateOrder = async (idOrder: string, order: { resolved: boolean }) => {
 		try {
 			const result: UpdateWriteOpResult = await orderModel.updateOne(
 				{ _id: idOrder },

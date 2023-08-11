@@ -15,7 +15,7 @@ export interface IOrderDAO {
 	getOrders(id: string): Promise<Array<Order> | null>;
 	getOrderById(idOrder: string): Promise<Order | null>;
 	saveOrder(order: Order): Promise<Order | null>;
-	updateOrder(idOrder: string, order: Order): Promise<UpdateWriteOpResult | null>;
+	updateOrder(idOrder: string, order: Object): Promise<UpdateWriteOpResult | null>;
 }
 
 export interface IUserDAO {

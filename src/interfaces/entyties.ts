@@ -13,6 +13,7 @@ export interface Order {
 	user: User;
 	products: Array<any>;
 	totalProducts: number;
+	resolved?: boolean;
 }
 
 export interface OrderModel extends Order, Document {}
