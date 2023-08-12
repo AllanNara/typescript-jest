@@ -1,40 +1,43 @@
-import { Request, Response } from "express";
-import OrderDAO from "../daos/mongo/order.dao";
-import { Order } from "../interfaces/entyties";
+import { Request, Response, NextFunction } from "express";
+import OrdersServices from "../services/orders.services";
 
-const orderDao = new OrderDAO();
-
-export default class OrderControllers {
-	async getOrders(_: Request, res: Response): Promise<Response> {
-		const result = await orderDao.getOrders();
-		if (result === null)
-			return res.status(500).send({ status: "error", error: "Something went wrong" });
-		return res.send({ status: "success", result });
+export default class OrderControllers extends OrdersServices {
+	async getAll(_: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const result = await super.getOrders();
+			res.send({ status: "success", result });
+		} catch (error) {
+			next(error);
+		}
 	}
 
-	async getOrderById(req: Request, res: Response): Promise<Response> {
-		const idOrder: string = req.params.id;
-		const result = await orderDao.getOrderById(idOrder);
-		if (result === null)
-			return res.status(404).send({ status: "error", error: "Order not found" });
-		return res.send({ status: "success", result });
+	async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const idOrder: string = req.params.id;
+			const result = await super.getOrderById(idOrder);
+			res.send({ status: "success", result });
+		} catch (error) {
+			next(error);
+		}
 	}
 
-	async createOrder(req: Request, res: Response): Promise<Response> {
-		const order: Order = req.body;
-		const result = await orderDao.saveOrder(order);
-		if (result === null)
-			return res.status(500).send({ status: "error", error: "Something went wrong" });
-		return res.send({ status: "success", result });
+	async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { user, business, products } = req.body;
+			const result = await super.createOrder(user, business, products);
+			res.send({ status: "success", result });
+		} catch (error) {
+			next(error);
+		}
 	}
 
-	async resolveOrder(req: Request, res: Response): Promise<Response> {
-		const idOrder: string = req.params.id;
-		const result = await orderDao.updateOrder(idOrder, {
-			resolved: true,
-		});
-		if (result === null)
-			return res.status(500).send({ status: "error", error: "Something went wrong" });
-		return res.send({ status: "success", result });
+	async resolve(req: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const idOrder: string = req.params.id;
+			const result = await super.resolveOrder(idOrder);
+			res.send({ status: "success", result });
+		} catch (error) {
+			next(error);
+		}
 	}
 }

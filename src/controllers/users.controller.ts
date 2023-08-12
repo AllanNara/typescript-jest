@@ -1,30 +1,34 @@
-import { Request, Response } from "express";
-import UserDAO from "../daos/mongo/user.dao";
+import { Request, Response, NextFunction } from "express";
 import { User } from "../interfaces/entyties";
+import UserServices from "../services/user.services";
 
-const userDao = new UserDAO();
-
-export default class UserControllers {
-	async getUsers(_: Request, res: Response): Promise<Response> {
-		const result = await userDao.getUsers();
-		if (result === null)
-			return res.status(500).send({ status: "error", error: "Something went wrong" });
-		return res.send({ status: "success", result });
+export default class UserControllers extends UserServices {
+	async getAll(_: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const result = await super.getUsers();
+			res.send({ status: "success", result });
+		} catch (error) {
+			next(error);
+		}
 	}
 
-	async getUserById(req: Request, res: Response): Promise<Response> {
-		const idUser: string = req.params.id;
-		const result = await userDao.getUserById(idUser);
-		if (result === null)
-			return res.status(404).send({ status: "error", error: "User not found" });
-		return res.send({ status: "success", result });
+	async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const idUser: string = req.params.id;
+			const result = await super.getUserById(idUser);
+			res.send({ status: "success", result });
+		} catch (error) {
+			next(error);
+		}
 	}
 
-	async saveUser(req: Request, res: Response): Promise<Response> {
-		const newUser: User = req.body;
-		const result = await userDao.saveUser(newUser);
-		if (result === null)
-			return res.status(500).send({ status: "error", error: "Something went wrong" });
-		return res.send({ status: "success", result });
+	async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const newUser: User = req.body;
+			const result = await super.createUser(newUser);
+			res.send({ status: "success", result });
+		} catch (error) {
+			next(error);
+		}
 	}
 }
