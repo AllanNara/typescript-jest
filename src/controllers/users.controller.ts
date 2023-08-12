@@ -14,7 +14,7 @@ export default class UserControllers extends UserServices {
 
 	async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
-			const idUser: string = req.params.id;
+			const idUser: string = req.params.uid;
 			const result = await super.getUserById(idUser);
 			res.send({ status: "success", result });
 		} catch (error) {

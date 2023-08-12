@@ -13,7 +13,7 @@ export default class OrderControllers extends OrdersServices {
 
 	async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
-			const idOrder: string = req.params.id;
+			const idOrder: string = req.params.oid;
 			const result = await super.getOrderById(idOrder);
 			res.send({ status: "success", result });
 		} catch (error) {
@@ -33,7 +33,7 @@ export default class OrderControllers extends OrdersServices {
 
 	async resolve(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
-			const idOrder: string = req.params.id;
+			const idOrder: string = req.params.oid;
 			const result = await super.resolveOrder(idOrder);
 			res.send({ status: "success", result });
 		} catch (error) {

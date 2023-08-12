@@ -4,9 +4,9 @@ import { UserModel } from "../../../interfaces/entyties";
 const collection = "users";
 
 const userSchema = new Schema<UserModel>({
-	name: { type: String, required: true },
+	username: { type: String, required: true },
 	email: { type: String, required: true },
-	role: { type: String },
+	role: { type: String, enum: ["user", "business", "admin"], default: "user" },
 	orders: [
 		{
 			type: Schema.Types.ObjectId,

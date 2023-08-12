@@ -1,4 +1,4 @@
-import { Order, Product } from "../interfaces/entyties";
+import { Order, ProductModel } from "../interfaces/entyties";
 import BusinessDAO from "../daos/mongo/business.dao";
 import CustomError from "../utils/customError";
 import OrderDAO from "../daos/mongo/order.dao";
@@ -40,12 +40,12 @@ export default class OrdersServices {
 			if (!resultUser) throw new CustomError("User not found", 400);
 			if (!resultBusiness) throw new CustomError("Business not found", 400);
 
-			let actualOrders: Array<Product> = [];
+			let actualOrders: Array<ProductModel> = [];
 			let totalPrice: number = 0;
 			let orderNumber: number = Date.now() + Math.floor(Math.random() * 10000 + 1);
 
 			actualOrders = resultBusiness.products.filter((product) =>
-				products.includes(product.id)
+				products.includes(product._id)
 			);
 			totalPrice = actualOrders.reduce((acc, prev) => {
 				acc += prev.price;
@@ -62,7 +62,7 @@ export default class OrdersServices {
 			};
 
 			const orderResult = await this.orderDAO.create(order);
-			resultUser.orders.push(orderResult);
+			resultUser.orders.push(orderResult._id);
 			await userDao.update(userId, resultUser);
 			return orderResult;
 		} catch (error) {

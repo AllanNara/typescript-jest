@@ -1,6 +1,9 @@
 import { Business, Product } from "../interfaces/entyties";
 import BusinessDAO from "../daos/mongo/business.dao";
 import CustomError from "../utils/customError";
+import ProductDAO from "../daos/mongo/product.dao";
+
+const productDAO = new ProductDAO();
 
 export default class BusinessServices {
 	private businessDAO: BusinessDAO = new BusinessDAO();
@@ -33,10 +36,11 @@ export default class BusinessServices {
 		}
 	}
 
-	protected async addProductToBusiness(idBusiness: string, producto: Product) {
+	protected async addProductToBusiness(idBusiness: string, product: Product) {
 		try {
 			const foundBusiness = await this.getBusinessById(idBusiness);
-			foundBusiness.products.push(producto);
+			const newProduct = await productDAO.create(product);
+			foundBusiness.products.push(newProduct._id);
 			const result = await this.businessDAO.update(idBusiness, foundBusiness);
 			return result;
 		} catch (error) {

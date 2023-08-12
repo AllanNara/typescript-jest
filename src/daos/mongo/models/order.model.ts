@@ -13,7 +13,12 @@ const orderSchema = new Schema<OrderModel>({
 		type: Schema.Types.ObjectId,
 		ref: "users",
 	},
-	products: [],
+	products: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "products",
+		},
+	],
 	totalPrice: { type: Number, required: true },
 });
 

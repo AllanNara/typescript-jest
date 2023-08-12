@@ -14,7 +14,7 @@ export default class BusinessControllers extends BusinessServices {
 
 	async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
-			const idBusiness: string = req.params.id;
+			const idBusiness: string = req.params.bid;
 			const result = await super.getBusinessById(idBusiness);
 			res.send({ status: "success", result });
 		} catch (error) {
@@ -34,7 +34,7 @@ export default class BusinessControllers extends BusinessServices {
 
 	async addProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
-			const idBusiness: string = req.params.id;
+			const idBusiness: string = req.params.bid;
 			const producto: Product = req.body;
 			const result = await super.addProductToBusiness(idBusiness, producto);
 			res.send({ status: "success", result });
