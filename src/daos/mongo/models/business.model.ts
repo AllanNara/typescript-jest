@@ -1,10 +1,11 @@
 import { Schema, model } from "mongoose";
 import { BusinessModel } from "../../../interfaces/entyties";
+import uniqueValidator from "mongoose-unique-validator";
 
 const collection = "business";
 
 export const businessSchema = new Schema<BusinessModel>({
-	name: { type: String, required: true },
+	name: { type: String, required: true, unique: true },
 	products: [
 		{
 			type: Schema.Types.ObjectId,
@@ -12,6 +13,8 @@ export const businessSchema = new Schema<BusinessModel>({
 		},
 	],
 });
+
+businessSchema.plugin(uniqueValidator);
 
 businessSchema.pre("findOne", function (next) {
 	this.populate("products");
