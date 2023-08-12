@@ -5,23 +5,47 @@ import businessRouter from "./routes/business.router";
 import ordersRouter from "./routes/orders.router";
 import cors from "cors";
 import mongoose from "mongoose";
+import { errorHandler, pageNotFound } from "./middleware/handlers";
 
-const app = express();
-const { DB_HOST, DB_USER, DB_PASS, PORT } = config;
+export default class App {
+	constructor(
+		private app: express.Application = express(),
+		private PORT: string = config.PORT,
+		private MONGO_URI: string = config.MONGO_URI
+	) {
+		this.setupDatabase();
+		this.setupMiddlewares();
+		this.setupRoutes();
+	}
 
-mongoose
-	.connect(`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/?retryWrites=true&w=majority`)
-	.then((res) => console.log("MongoDB connected successfully"))
-	.catch((err) => console.log("Error to connect MongoDB: ", err));
+	private async setupDatabase() {
+		try {
+			await mongoose.connect(this.MONGO_URI);
+			console.log("MongoDB connected successfully");
+		} catch (error) {
+			console.error("Error connecting to MongoDB:", error);
+		}
+	}
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+	private setupMiddlewares() {
+		this.app.use(
+			cors({ origin: "http://localhost:5500", methods: ["GET", "POST", "PUT"] })
+		);
+		this.app.use(express.json());
+		this.app.use(express.urlencoded({ extended: true }));
+	}
 
-app.use("/api/user", userRouter);
-app.use("/api/business", businessRouter);
-app.use("/api/order", ordersRouter);
+	private setupRoutes() {
+		this.app.use("/api/user", userRouter);
+		this.app.use("/api/business", businessRouter);
+		this.app.use("/api/order", ordersRouter);
+		this.app.use("*", pageNotFound);
+		this.app.use(errorHandler);
+	}
 
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`);
-});
+	public startServer() {
+		this.app.listen(this.PORT, () => {
+			console.log(`Server running on port ${this.PORT}`);
+		});
+	}
+}

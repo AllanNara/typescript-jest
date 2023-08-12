@@ -2,12 +2,12 @@
 	"name": "ejercicio",
 	"version": "1.0.0",
 	"description": "",
-	"main": "./src/app.ts",
+	"main": "server.ts",
 	"scripts": {
-		"start": "node ./dist/app.js",
-		"dev:ts": "ts-node src/app.ts",
-		"dev:watch": "nodemon ./dist/app.js",
+		"start": "node ./dist/server.js",
+		"dev:watch": "nodemon ./dist/server.js",
 		"dev:compile": "tsc --watch",
+		"dev:ts": "ts-node server.ts",
 		"build": "tsc",
 		"test": "jest"
 	},
