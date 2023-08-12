@@ -1,41 +1,41 @@
 import { UpdateWriteOpResult } from "mongoose";
-
+import { User, UserModel } from "../../interfaces/entyties";
+import CustomError from "../../utils/customError";
+import IDAO from "../../interfaces/daos";
 import userModel from "./models/user.model";
-import { User } from "../../interfaces/entyties";
-import { IUserDAO } from "../../interfaces/daos";
 
-export default class UserDAO implements IUserDAO {
-	getUsers = async () => {
+export default class UserDAO implements IDAO<UserModel, User> {
+	public async get() {
 		try {
-			const users: Array<User> = await userModel.find();
+			const users: Array<UserModel> = await userModel.find();
 			return users;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	getUserById = async (idUser: string) => {
+	public async getById(idUser: string) {
 		try {
-			const user: User | null = await userModel.findById(idUser);
+			const user: UserModel | null = await userModel.findById(idUser);
 			return user;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	saveUser = async (user: User) => {
+	public async create(user: User) {
 		try {
-			const newUser: User = await userModel.create(user);
+			const newUser: UserModel = await userModel.create(user);
 			return newUser;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	updateUser = async (idUser: string, user: User) => {
+	public async update(idUser: string, user: User | UserModel) {
 		try {
 			const result: UpdateWriteOpResult = await userModel.updateOne(
 				{ _id: idUser },
@@ -44,7 +44,7 @@ export default class UserDAO implements IUserDAO {
 			return result;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 }

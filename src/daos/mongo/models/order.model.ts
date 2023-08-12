@@ -14,7 +14,7 @@ const orderSchema = new Schema<OrderModel>({
 		ref: "users",
 	},
 	products: [],
-	totalProducts: { type: Number, required: true },
+	totalPrice: { type: Number, required: true },
 });
 
 const orderModel = model<OrderModel>(collection, orderSchema);

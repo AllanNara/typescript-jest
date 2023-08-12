@@ -1,42 +1,42 @@
+import { Order, OrderModel } from "../../interfaces/entyties";
 import { UpdateWriteOpResult } from "mongoose";
-
-import { Order } from "../../interfaces/entyties";
-import { IOrderDAO } from "../../interfaces/daos";
+import CustomError from "../../utils/customError";
+import IDAO from "../../interfaces/daos";
 import orderModel from "./models/order.model";
 
-export default class OrderDAO implements IOrderDAO {
-	getOrders = async () => {
+export default class OrderDAO implements IDAO<OrderModel, Order> {
+	public async get() {
 		try {
-			const orders: Array<Order> = await orderModel.find();
+			const orders: Array<OrderModel> = await orderModel.find();
 			return orders;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	getOrderById = async (idOrder: string) => {
+	public async getById(idOrder: string) {
 		try {
-			const order: Order | null = await orderModel.findById(idOrder);
+			const order: OrderModel | null = await orderModel.findById(idOrder);
 			return order;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	saveOrder = async (order: Order) => {
+	public async create(order: Order) {
 		try {
 			order.resolved = false;
-			const newOrder: Order = await orderModel.create(order);
+			const newOrder: OrderModel = await orderModel.create(order);
 			return newOrder;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	updateOrder = async (idOrder: string, order: { resolved: boolean }) => {
+	public async update(idOrder: string, order: { resolved: boolean }) {
 		try {
 			const result: UpdateWriteOpResult = await orderModel.updateOne(
 				{ _id: idOrder },
@@ -45,7 +45,7 @@ export default class OrderDAO implements IOrderDAO {
 			return result;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 }

@@ -1,41 +1,41 @@
+import { Business, BusinessModel } from "../../interfaces/entyties";
 import { UpdateWriteOpResult } from "mongoose";
-
-import { Business } from "../../interfaces/entyties";
-import { IBusinessDAO } from "../../interfaces/daos";
 import businessModel from "./models/business.model";
+import CustomError from "../../utils/customError";
+import IDAO from "../../interfaces/daos";
 
-export default class BusinessDAO implements IBusinessDAO {
-	getBusiness = async () => {
+export default class BusinessDAO implements IDAO<BusinessModel, Business> {
+	public async get() {
 		try {
-			const business: Array<Business> = await businessModel.find();
+			const business: Array<BusinessModel> = await businessModel.find();
 			return business;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	getBusinessById = async (idBusiness: string) => {
+	public async getById(idBusiness: string) {
 		try {
-			const business: Business | null = await businessModel.findById(idBusiness);
+			const business: BusinessModel | null = await businessModel.findById(idBusiness);
 			return business;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	saveBusiness = async (business: Business) => {
+	public async create(business: Business) {
 		try {
-			const newBusiness: Business = await businessModel.create(business);
+			const newBusiness: BusinessModel = await businessModel.create(business);
 			return newBusiness;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 
-	updateBusiness = async (idBusiness: string, business: Business) => {
+	public async update(idBusiness: string, business: Business) {
 		try {
 			const result: UpdateWriteOpResult = await businessModel.updateOne(
 				{ _id: idBusiness },
@@ -44,7 +44,7 @@ export default class BusinessDAO implements IBusinessDAO {
 			return result;
 		} catch (error) {
 			console.log(error);
-			return null;
+			throw new CustomError();
 		}
-	};
+	}
 }
