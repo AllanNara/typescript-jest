@@ -14,11 +14,16 @@ export interface Business {
 
 export interface BusinessModel extends Business, Document {}
 
+export interface Products {
+	product: ProductModel;
+	quantity: number;
+}
+
 export interface Order {
 	number: number;
 	business: Business | string;
 	user: User | string;
-	products: Array<ProductModel>;
+	products: Array<Products>;
 	totalPrice: number;
 	resolved?: boolean;
 }

@@ -1,4 +1,4 @@
-import { Order, ProductModel } from "../interfaces/entyties";
+import { Order, Products } from "../interfaces/entyties";
 import BusinessDAO from "../daos/mongo/business.dao";
 import CustomError from "../utils/customError";
 import OrderDAO from "../daos/mongo/order.dao";
@@ -32,7 +32,7 @@ export default class OrdersServices {
 	protected async createOrder(
 		userId: string,
 		businessId: string,
-		products: Array<string>
+		products: Array<Products>
 	) {
 		try {
 			const resultUser = await userDao.getById(userId);
@@ -40,15 +40,25 @@ export default class OrdersServices {
 			if (!resultUser) throw new CustomError("User not found", 400);
 			if (!resultBusiness) throw new CustomError("Business not found", 400);
 
-			let actualOrders: Array<ProductModel> = [];
+			let actualOrders: Array<Products> = [];
 			let totalPrice: number = 0;
 			let orderNumber: number = Date.now() + Math.floor(Math.random() * 10000 + 1);
 
-			actualOrders = resultBusiness.products.filter((product) =>
-				products.includes(product._id)
-			);
-			totalPrice = actualOrders.reduce((acc, prev) => {
-				acc += prev.price;
+			resultBusiness.products.forEach((product): void => {
+				if (products.includes(product._id)) {
+					let foundProductInOrder: Products | undefined;
+					foundProductInOrder = actualOrders.find(
+						(productOrder) => productOrder.product === product._id
+					);
+					if (!foundProductInOrder) {
+						foundProductInOrder = { product: product._id, quantity: 1 };
+						actualOrders.push(foundProductInOrder);
+					} else foundProductInOrder.quantity++;
+				}
+			});
+
+			totalPrice = actualOrders.reduce((acc: number, curr: Products) => {
+				acc = acc + curr.product.price * curr.quantity;
 				return acc;
 			}, 0);
 
@@ -57,7 +67,7 @@ export default class OrdersServices {
 				business: businessId,
 				user: userId,
 				resolved: false,
-				products: actualOrders.map((product) => product.id),
+				products: actualOrders,
 				totalPrice,
 			};
 
